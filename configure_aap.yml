@@ -1,0 +1,21 @@
+---
+- name: Configure AAP
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    # Load All configs
+    - name: Load All files and directories under configs
+      ansible.builtin.include_vars:
+        dir: "configs"
+        extensions:
+          - yml
+          - yaml
+
+    - name: Apply configuration using dispatch
+      ansible.builtin.include_role:
+        name: infra.aap_configuration.dispatch
+      vars:
+        dispatch_include_wildcard_vars: true
+        aap_configuration_collect_logs: true
